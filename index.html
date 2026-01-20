@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Invitación Especial 🌼💖</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  margin:0;
+  height:100vh;
+  font-family:'Segoe UI',sans-serif;
+
+  /* 🌸 FONDO CON IMAGEN */
+  background:
+    linear-gradient(rgba(255,245,248,.65), rgba(255,245,248,.65)),
+    url("musica/fondo.gif") center/cover no-repeat;
+
+  overflow:hidden;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+/* 🌼 MARGARITAS */
+.flower{
+  position:absolute;
+  font-size:90px; /* 🌼 MÁS GRANDES */
+  opacity:0.9;
+  animation:float linear infinite;
+  z-index:1;
+}
+
+
+@keyframes float{
+  0%{transform:translateY(110vh) rotate(0deg) scale(0.7);opacity:0;}
+  40%{opacity:1;}
+  100%{transform:translateY(-15vh) rotate(360deg) scale(1.1);opacity:0;}
+}
+
+/* 💌 TARJETA */
+.card{
+  background:rgba(255,255,255,0.97);
+  padding:40px;
+  border-radius:30px;
+  width:90%;
+  max-width:470px;
+  text-align:center;
+  box-shadow:0 30px 55px rgba(0,0,0,0.25);
+  z-index:10;
+}
+
+h1{color:#e91e63;margin-bottom:10px;}
+
+.frase{
+  font-style:italic;
+  color:#c2185b;
+  margin:20px 0;
+  min-height:60px;
+  transition:opacity .6s;
+}
+
+p{color:#555;line-height:1.6;}
+
+button{
+  margin-top:18px;
+  padding:14px 30px;
+  border:none;
+  border-radius:30px;
+  font-size:16px;
+  background:linear-gradient(135deg,#e91e63,#ff8a80);
+  color:white;
+  cursor:pointer;
+  transition:.3s;
+}
+button:hover{transform:scale(1.08);}
+
+/* MODALES */
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.5);
+  justify-content:center;
+  align-items:center;
+  z-index:20;
+}
+
+.modal-content{
+  background:white;
+  padding:30px;
+  border-radius:24px;
+  width:90%;
+  max-width:400px;
+}
+
+input,textarea{
+  width:100%;
+  margin-top:12px;
+  padding:12px;
+  border-radius:12px;
+  border:1px solid #ccc;
+}
+textarea{resize:none;height:90px;}
+</style>
+</head>
+
+<body>
+
+<!-- 🎶 MÚSICA -->
+<audio id="music" autoplay muted loop>
+  <source src="musica/Lover.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+document.addEventListener("click",()=>{
+  const audio=document.getElementById("music");
+  audio.muted=false;
+  audio.play();
+},{once:true});
+</script>
+
+<!-- 🌼 FLORES -->
+<script>
+for(let i=0;i<20;i++){
+  const f=document.createElement("div");
+  f.className="flower";
+  f.innerHTML="🌼";
+  f.style.left=Math.random()*100+"vw";
+  f.style.animationDuration=(12+Math.random()*8)+"s";
+ f.style.fontSize=(85+Math.random()*45)+"px"; // 🌼 MUCHO MÁS GRANDES
+
+  document.body.appendChild(f);
+}
+</script>
+
+<!-- 💖 TARJETA -->
+<div class="card">
+  <h1>🌼 Invitación especial 🌼</h1>
+
+  <div class="frase" id="frase">
+    Porque las cosas simples, cuando son sinceras, se vuelven especiales.
+  </div>
+
+  <p>
+    Con mucho respeto y cariño, quisiera invitarla a compartir
+    un momento tranquilo, una conversación sincera
+    y una sonrisa que se quede en el recuerdo.
+  </p>
+
+  <button onclick="abrir()">Aceptar 🌸</button><br>
+  <button style="background:#9c27b0" onclick="ver()">Ver su respuesta 💌</button>
+</div>
+
+<!-- ✍️ MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <h3 style="color:#e91e63;">💖 Me encantaría saber…</h3>
+    <input id="dias" placeholder="Días en los que podría salir">
+    <textarea id="motivo"
+      placeholder="Si desea, cuénteme qué le hizo sonreír de esta invitación…"></textarea>
+    <button onclick="guardar()">Guardar 🌼</button>
+  </div>
+</div>
+
+<!-- 👀 MODAL VER -->
+<div class="modal" id="modalVer">
+  <div class="modal-content">
+    <h3 style="color:#e91e63;">🌸 Su respuesta 🌸</h3>
+    <p><b>Días disponibles:</b></p>
+    <p id="vDias"></p>
+    <p><b>Mensaje:</b></p>
+    <p id="vMotivo"></p>
+    <button onclick="cerrar()">Cerrar</button>
+  </div>
+</div>
+
+<script>
+const frases=[
+  "Porque cada detalle sencillo puede convertirse en un recuerdo bonito.",
+  "Porque una conversación tranquila a veces dice más que mil palabras.",
+  "Porque compartir tiempo es una de las formas más sinceras de cariño.",
+  "Porque me agrada la idea de verla sonreír, sin prisas.",
+  "Porque a pesar de todo te sigo amando",
+  "Porque me encanta mimarte y hacerte mimada",
+  "Porque en verdad quiero estar contigo y ser su apoyo .",
+  "Porque hay invitaciones que nacen del respeto y la ilusión."
+  
+];
+
+let i=0;
+const fraseEl=document.getElementById("frase");
+
+setInterval(()=>{
+  fraseEl.style.opacity=0;
+  setTimeout(()=>{
+    i=(i+1)%frases.length;
+    fraseEl.textContent=frases[i];
+    fraseEl.style.opacity=1;
+  },600);
+},4000);
+
+const modal=document.getElementById("modal");
+const modalVer=document.getElementById("modalVer");
+
+function abrir(){ modal.style.display="flex"; }
+
+function guardar(){
+  localStorage.setItem("dias",dias.value);
+  localStorage.setItem("motivo",motivo.value);
+  modal.style.display="none";
+}
+
+function ver(){
+  vDias.innerText=localStorage.getItem("dias")||"Aún no ha respondido";
+  vMotivo.innerText=localStorage.getItem("motivo")||"Aún no ha respondido";
+  modalVer.style.display="flex";
+}
+
+function cerrar(){ modalVer.style.display="none"; }
+</script>
+
+</body>
+</html>
