@@ -108,16 +108,15 @@ textarea{resize:none;height:90px;}
 <body>
 
 <!-- 🎶 MÚSICA -->
-<audio id="music" autoplay muted loop>
-  <source src="musica/Lover.mp3" type="audio/mpeg">
+<audio id="music" loop>
+  <source src="./musica/Lover.mp3" type="audio/mpeg">
 </audio>
 
 <script>
-document.addEventListener("click",()=>{
-  const audio=document.getElementById("music");
-  audio.muted=false;
-  audio.play();
-},{once:true});
+document.addEventListener("click", () => {
+  const audio = document.getElementById("music");
+  audio.play().catch(e => console.log("Requiere interacción"));
+}, { once: true });
 </script>
 
 <!-- 🌼 FLORES -->
@@ -222,3 +221,4 @@ function cerrar(){ modalVer.style.display="none"; }
 
 </body>
 </html>
+
